@@ -1,5 +1,6 @@
 from yelpy_signer import YelpySigner
 from search_query import SearchQuery
+from business_query import BusinessQuery
 import urllib2
 import json
 
@@ -26,8 +27,13 @@ class YelpyClient(object):
         signed_url = self.signer.sign(sq.to_url())
         return self.connect(signed_url)
 
-    def business(self):
-        pass
+    def business(self, business_id):
+        bq = BusinessQuery(
+            business_id=business_id
+        )
+        signed_url = self.signer.sign(bq.to_url())
+        return self.connect(signed_url)
+
 
     def connect(self, signed_url):
         try:
