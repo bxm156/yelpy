@@ -17,6 +17,17 @@ class YelpyClient(object):
         if self.max_calls is not None and self.total_calls > self.max_calls:
             raise Exception
         self.total_calls += 1
+
+    def validate_result(self, result):
+        error = result.get('error', None)
+        if error is not None:
+            error_type = error.get('id', None)
+            if error_type == 'EXCEEDED_REQS':
+                raise Exception
+            else:
+                #Unknown Exception
+                raise Exception
+        return result
     
     def search(self, term=None, limit=None, offset=None, sort=None, category_filter=None, radius_filter=None, deals_filter=None, cc=None, lang=None, lang_filter=None, **kwargs):
         self.validate_limit()
@@ -34,7 +45,8 @@ class YelpyClient(object):
             **kwargs
         )
         signed_url = self.signer.sign(sq.to_url())
-        return self.connect(signed_url)
+        result = self.connect(signed_url)
+        return self.validate_result(result)
 
     def business(self, business_id):
         self.validate_limit()
@@ -42,7 +54,8 @@ class YelpyClient(object):
             business_id=business_id
         )
         signed_url = self.signer.sign(bq.to_url())
-        return self.connect(signed_url)
+        result = self.connect(signed_url)
+        return self.validate_result(result)
 
 
     def connect(self, signed_url):

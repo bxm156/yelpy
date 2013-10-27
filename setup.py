@@ -5,12 +5,12 @@ except ImportError:
 
 setup(
     name='Yelpy',
-    version='0.2.2dev',
+    version='0.2.3dev',
     description='Yelp API Client',
     author='Bryan Marty',
     author_email='hello@bryanmarty.com',
     url='http://www.bryanmarty.com',
     packages=['yelpy'],
     license='GPLv2',
-    install_requires=['oauth2'],
+    install_requires=['oauth2-utf8'],
 )
