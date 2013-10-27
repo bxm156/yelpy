@@ -6,11 +6,20 @@ import json
 
 class YelpyClient(object):
 
-    def __init__(self, consumer_key=None, consumer_secret=None, token=None, token_secret=None):
+    total_calls = 0
+
+    def __init__(self, consumer_key=None, consumer_secret=None, token=None, token_secret=None, max_calls=None):
         super(YelpyClient, self).__init__()
         self.signer = YelpySigner(consumer_key, consumer_secret, token, token_secret)
+        self.max_calls = max_calls
+
+    def validate_limit(self):
+        if self.max_calls is not None and self.total_calls > self.max_calls:
+            raise Exception
+        self.total_calls += 1
     
     def search(self, term=None, limit=None, offset=None, sort=None, category_filter=None, radius_filter=None, deals_filter=None, cc=None, lang=None, lang_filter=None, **kwargs):
+        self.validate_limit()
         sq = SearchQuery(
             term=term,
             limit=limit,
@@ -28,6 +37,7 @@ class YelpyClient(object):
         return self.connect(signed_url)
 
     def business(self, business_id):
+        self.validate_limit()
         bq = BusinessQuery(
             business_id=business_id
         )
