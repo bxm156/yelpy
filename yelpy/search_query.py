@@ -17,5 +17,5 @@ class SearchQuery(dict):
         return value
 
     def to_url(self):
-        params = dict((key, self.normalize(value).encode('utf-8')) for key, value in self.iteritems() if value != None)
+        params = dict((key, unicode(self.normalize(value)).encode('utf-8')) for key, value in self.iteritems() if value != None)
         return "{0}{1}".format(self.SERVER_URL, urllib.urlencode(params))

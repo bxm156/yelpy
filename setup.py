@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
     name='Yelpy',
-    version='0.2.3dev',
+    version='0.2.4dev',
     description='Yelp API Client',
     author='Bryan Marty',
     author_email='hello@bryanmarty.com',
