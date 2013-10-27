@@ -10,4 +10,4 @@ class BusinessQuery(dict):
         self.business_id=business_id
 
     def to_url(self):
-        return "{0}{1}".format(self.SERVER_URL, urllib.quote(self.business_id))
+        return "{0}{1}".format(self.SERVER_URL, urllib.quote(unicode(self.business_id).encode("utf-8")))
